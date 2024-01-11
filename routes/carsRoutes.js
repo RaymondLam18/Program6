@@ -309,7 +309,12 @@ routes.put('/:id', async (req, res) => {
     }
 
     try {
-        const updatedCar = await Car.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        // Check if _id is provided in the request body
+        if (!req.body._id) {
+            return res.status(400).json({ message: '_id is required for update' });
+        }
+
+        const updatedCar = await Car.findByIdAndUpdate(req.body._id, req.body, { new: true });
 
         if (!updatedCar) {
             return res.status(404).json({ message: 'Car not found' });
@@ -330,6 +335,7 @@ routes.put('/:id', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
 
 routes.delete('/:id', async (req, res) => {
     try {
