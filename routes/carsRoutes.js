@@ -4,6 +4,13 @@ import Car from '../models/Car.js';
 
 const routes = express.Router();
 
+routes.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+
+    next();
+});
+
 function currentItems(total, start, limit) {
     if (isNaN(start) || isNaN(limit)) {
         return total;
